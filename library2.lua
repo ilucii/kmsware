@@ -154,35 +154,34 @@ local FontNames = {
     ["DOS VGA"] = "Perfect DOS VGA 437.ttf",
 }
 
--- Function to register fonts via Potassium
-local function RegisterFont(FileName)
-    -- Download font if it doesn't exist
-    if not isfile(FileName) then
-        writefile(FileName, game:HttpGet("https://raw.githubusercontent.com/ilucii/fonts/main/" .. FileName))
-    end
-    -- Return custom asset path
-    return getcustomasset(FileName)
-end
-
--- Loop through all fonts and create FontFace objects
+-- Register TTF fonts via getcustomasset()
 for name, file in pairs(FontNames) do
-    local asset = RegisterFont(file)
-
-    -- Handle bold / weight adjustments if needed
-    local weight = Enum.FontWeight.Regular
-    if name == "Rubik" or name == "Tahoma Bold" then
-        weight = Enum.FontWeight.Bold
+    if not isfile(file) then
+        writefile(file, game:HttpGet("https://raw.githubusercontent.com/ilucii/fonts/main/" .. file))
     end
-
-    Fonts[name] = FontFace.new(asset, weight, Enum.FontStyle.Normal)
+    Fonts[name] = getcustomasset(file) -- store TTF path
 end
 
--- Example usage:
+-- When creating a TextLabel / TextButton:
+local function ApplyFont(UIObject, FontName)
+    if Fonts[FontName] then
+        -- Potassium supports setting Font to Enum.Font.SourceSans / any enum
+        -- Then override the TTF via TextScaled + getcustomasset()
+        UIObject.Font = Enum.Font.SourceSans -- required, placeholder
+        UIObject.Text = "Hello World"
+        UIObject.TextScaled = true
+        -- Set custom TTF asset directly
+        pcall(function()
+            UIObject.FontFace = FontFace.new(Fonts[FontName], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+        end)
+    end
+end
+
+-- Example:
 -- local label = Instance.new("TextLabel")
--- label.FontFace = Fonts["Verdana"]
--- label.Text = "Hello World"
 -- label.Size = UDim2.fromOffset(200, 50)
 -- label.Parent = game.CoreGui
+-- ApplyFont(label, "Verdana")
 
 
 -- Library functions 
