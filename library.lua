@@ -4964,6 +4964,13 @@
 						Library:Notification({Name = "Hello there!", Lifetime = 5}
                     end})
                 end})
+				-- unload button bcuz og llib didn thave it
+				Section:Button({Name = "Unload", Tooltip = {
+            Title = "<font color = '#FFFF00'>WARNING!!</font>", 
+            Text = "UNLOADS THE LIBRARY!!!!!! ONLY USE WHEN U WANT TO UNLOAD EVERYTHING DUDE", 
+            Width = 200, Callback = function()
+                    Library:Unload()
+                end})
             -- 
         end
     --
