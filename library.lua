@@ -4956,24 +4956,30 @@
                     end 
                 end})
                 Section:Button({Name = "Test", Callback = function()
-                    local Notification = Library:Notification({Name = "Hello there!", Lifetime = 5})
-                    Notification:NotificationButton({Name = "Discard", Callback = function()
-                        Notification.DestroyNotif()
-                    end})
-                    Notification:NotificationButton({Name = "Make another", Callback = function()
-						Library:Notification({Name = "Hello there!", Lifetime = 5}
-                    end})
-                end})
-				-- unload button bcuz og llib didn thave it
-				Section:Button({Name = "Unload", Tooltip = {
-            Title = "<font color = '#FFFF00'>WARNING!!</font>", 
-            Text = "UNLOADS THE LIBRARY!!!!!! ONLY USE WHEN U WANT TO UNLOAD EVERYTHING DUDE", 
-            Width = 200, Callback = function()
-                    Library:Unload()
-                end})
-            -- 
-        end
-    --
+   				local Notification = Library:Notification({Name = "Hello there!", Lifetime = 5})
+    			Notification:NotificationButton({Name = "Discard", Callback = function()
+        		Notification.DestroyNotif()
+    			end})
+    			Notification:NotificationButton({Name = "Make another", Callback = function()
+        		Library:Notification({Name = "Hello there!", Lifetime = 5})
+    	end})
+end})
+
+-- unload button bcuz og lib didnt have it
+Section:Button({
+    Name = "Unload",
+    Tooltip = {
+        Title = "<font color = '#FFFF00'>WARNING!!</font>",
+        Text = "UNLOADS THE LIBRARY!!!!!! ONLY USE WHEN U WANT TO UNLOAD EVERYTHING DUDE",
+        Width = 200
+    },
+    Callback = function()
+        Library:Unload()
+    end
+})
+-- 
+end
+
         
     -- Notification Library
         local Notifications = Library.Notifications
