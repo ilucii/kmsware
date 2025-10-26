@@ -132,12 +132,13 @@
     local ConfigFlags = Library.ConfigFlags
     local Notifications = Library.Notifications 
 
-    -- =============================
+-- =============================
 -- Custom Fonts for Potassium
 -- =============================
 
 local Fonts = {}
 
+-- Map font names to their TTF filenames
 local FontNames = {
     ["ProggyClean"] = "ProggyClean.ttf",
     ["Tahoma"] = "fs-tahoma-8px.ttf",
@@ -154,7 +155,7 @@ local FontNames = {
     ["DOS VGA"] = "Perfect DOS VGA 437.ttf",
 }
 
--- Register TTF fonts via getcustomasset()
+-- Download fonts if missing and store getcustomasset paths
 for name, file in pairs(FontNames) do
     if not isfile(file) then
         writefile(file, game:HttpGet("https://raw.githubusercontent.com/ilucii/fonts/main/" .. file))
@@ -162,22 +163,24 @@ for name, file in pairs(FontNames) do
     Fonts[name] = getcustomasset(file) -- store TTF path
 end
 
--- When creating a TextLabel / TextButton:
+-- Function to apply a font to a UI object
+-- Potassium uses the TTF asset directly; do NOT use FontFace.new()
 local function ApplyFont(UIObject, FontName)
-    if Fonts[FontName] then
-        -- Potassium supports setting Font to Enum.Font.SourceSans / any enum
-        -- Then override the TTF via TextScaled + getcustomasset()
-        UIObject.Font = Enum.Font.SourceSans -- required, placeholder
-        UIObject.Text = "Hello World"
+    local ttf = Fonts[FontName]
+    if ttf then
+        -- Roblox requires a Font enum, but the TTF override will be used by Potassium
+        UIObject.Font = Enum.Font.SourceSans
         UIObject.TextScaled = true
-        -- Set custom TTF asset directly
-        pcall(function()
-            UIObject.FontFace = FontFace.new(Fonts[FontName], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-        end)
+        UIObject.Text = "Hello World"
+        
+        -- If your library supports a CustomFont property:
+        if rawget(UIObject, "CustomFont") ~= nil then
+            UIObject.CustomFont = ttf
+        end
     end
 end
 
--- Example:
+-- Example usage:
 -- local label = Instance.new("TextLabel")
 -- label.Size = UDim2.fromOffset(200, 50)
 -- label.Parent = game.CoreGui
