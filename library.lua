@@ -186,7 +186,7 @@
 
             local RegisteredFont = RegisterFont(name, Weight, "Normal", {
                 Id = suffix,
-                Font = game:HttpGet("https://github.com/ilucii/fonts/tree/main" .. suffix),
+                Font = game:HttpGet("https://raw.githubusercontent.com/ilucii/fonts/main/" .. suffix),
             }) 
             
             Fonts[name] = Font.new(RegisteredFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
@@ -4950,7 +4950,7 @@
 
                     themes.preset.textsize = int
                 end})
-                Section:Slider({Name = "Blur Intensity", Default = 14, Decimal = 1, Min = 1, Max = 100, Flag = "BlurSize", Callback = function(int)
+                Section:Slider({Name = "Blur Intensity", Default = 22, Decimal = 1, Min = 1, Max = 100, Flag = "BlurSize", Callback = function(int)
                     if Window.Items.Holder.Visible then 
                         Library.Blur.Size = int
                     end 
@@ -4961,6 +4961,7 @@
                         Notification.DestroyNotif()
                     end})
                     Notification:NotificationButton({Name = "Make another", Callback = function()
+						Library:Notification({Name = "Hello there!", Lifetime = 5}
                     end})
                 end})
             -- 
