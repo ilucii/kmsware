@@ -1935,7 +1935,7 @@
             end
 
             function Cfg.ChangeMenuTitle(string)
-                print("tried to change name to ".. string ..", just go to the github and change it urself LOSERRRR")
+                Items.Title.Text = string -- never happed wdytb fuck you.
             end 
 
             -- recommended that you use richtext for automatic theming of the accent text.
